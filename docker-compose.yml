@@ -34,8 +34,6 @@ services:
     restart: unless-stopped
 
   slack-mcp:
-    image: node:18-alpine
-    working_dir: /app
     command: npx -y @modelcontextprotocol/server-slack
     environment:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
