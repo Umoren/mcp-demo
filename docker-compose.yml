@@ -1,0 +1,37 @@
+services:
+  github-mcp:
+    build: ./servers/github-mcp
+    ports:
+      - "8001:8001"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_REPO=${GITHUB_REPO:- Umoren/test-repo}
+      - PORT=8001
+      - LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+  merge-mcp:
+    build: ./servers/merge-mcp
+    ports:
+      - "8002:8002"
+    environment:
+      - MERGE_API_KEY=${MERGE_API_KEY}
+      - MERGE_ACCOUNT_TOKEN=${MERGE_ACCOUNT_TOKEN}
+      - PORT=8002
+      - LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+networks:
+  default:
+    name: mcp-demo
