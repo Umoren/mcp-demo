@@ -228,7 +228,3 @@ This repository demonstrates MCP integration patterns for educational and develo
 - Performance optimization examples
 - Security best practices
 - Documentation improvements
-
-## License
-
-MIT License - see LICENSE file for details.
