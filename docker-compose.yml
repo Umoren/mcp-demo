@@ -5,7 +5,7 @@ services:
       - "8001:8001"
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GITHUB_REPO=${GITHUB_REPO:- Umoren/test-repo}
+      - GITHUB_REPO=${GITHUB_REPO:-Umoren/test-repo}
       - PORT=8001
       - LOG_LEVEL=info
     healthcheck:
@@ -15,6 +15,7 @@ services:
       retries: 3
       start_period: 30s
     restart: unless-stopped
+
   merge-mcp:
     build: ./servers/merge-mcp
     ports:
@@ -30,6 +31,20 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+    restart: unless-stopped
+
+  slack-mcp:
+    image: node:18-alpine
+    working_dir: /app
+    command: npx -y @modelcontextprotocol/server-slack
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_TEAM_ID=${SLACK_TEAM_ID}
+      - SLACK_CHANNEL_IDS=${SLACK_CHANNEL_IDS:-}
+    ports:
+      - "8003:8003"
+    stdin_open: true
+    tty: true
     restart: unless-stopped
 
 networks:
